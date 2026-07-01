@@ -1,0 +1,69 @@
+echo "# basic" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/05saitejaswi/basic.git
+git push -u origin main
+
+
+
+GIT COMMANDS
+=========================
+
+SETUP & CONFIG
+--------------
+git init                                     Create a new repo
+git clone <url>                              Clone an existing repo
+git config --global user.name "Name"        Set your name
+git config --global user.email "e@x.com"    Set your email
+
+BASIC WORKFLOW
+--------------
+git status                                   See what's changed
+git add <file> / .                           Stage a file / stage everything
+git commit -m "msg"                          Commit staged changes
+git log --oneline --graph                    Compact visual history
+
+BRANCHING
+---------
+git branch                                   List branches
+git checkout -b <name>                       Create + switch to new branch
+git switch <name>                            Switch branches (modern)
+git merge <branch>                           Merge branch into current
+git branch -d <name>                         Delete a branch
+
+REMOTES
+-------
+git remote add origin <url>                  Link a remote repo
+git push origin <branch>                     Push commits
+git pull origin <branch>                     Fetch + merge
+git fetch                                    Fetch without merging
+
+UNDOING THINGS
+---------------
+git restore <file>                           Discard local changes
+git reset <file>                             Unstage a file
+git reset --hard HEAD                        Discard ALL local changes
+git revert <commit>                          Undo via new commit
+git commit --amend                           Edit the last commit
+
+INSPECTING
+----------
+git diff                                     Unstaged changes
+git diff --staged                            Staged changes
+git show <commit>                            Details of a commit
+git blame <file>                             Who changed what, by line
+
+STASHING
+--------
+git stash                                    Save uncommitted changes
+git stash list                               List stashes
+git stash pop                                Reapply + remove latest stash
+
+REBASING & TAGS
+----------------
+git rebase <branch>                          Reapply commits on new base
+git rebase -i HEAD~3                         Interactive rebase, last 3 commits
+git tag v1.0.0                               Create a tag
+git push origin v1.0.0                       Push a tag
