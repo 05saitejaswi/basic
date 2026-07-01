@@ -1,0 +1,434 @@
+<!--
+  Practice project - rebuilding a Jira-style issue page to work on
+  HTML structure, flexbox/grid layout, and vanilla JS DOM stuff.
+  Using Bootstrap Icons from a CDN instead of drawing my own icons.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Monitor Issue</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+<body>
+
+<header class="top-navbar">
+  <div class="nav-left">
+    <button class="icon-btn" aria-label="Collapse sidebar">
+      <i class="bi bi-layout-sidebar"></i>
+    </button>
+
+    <div class="logo-box">
+      <span class="logo-icon">MI</span>
+      <span class="logo-text">Monitor</span>
+    </div>
+  </div>
+  <div class="nav-center">
+    <div class="search-wrapper">
+      <i class="bi bi-search"></i>
+
+      <input
+        type="search"
+        id="searchInput"
+        class="search-input"
+        placeholder="Search issues"
+      >
+    </div>
+  </div>
+
+  <div class="nav-right">
+    <button class="create-btn" id="openCreateModalBtn"> Create</button>
+    <button class="icon-btn badge-btn" aria-label="Notifications">
+
+    </button>
+    <div class="help-wrapper">
+      <button class="icon-btn" id="helpBtn" aria-label="Help" aria-haspopup="true" aria-expanded="false">
+        <i class="bi bi-question-circle"></i>
+      </button>
+      <div class="help-menu" id="helpMenu" hidden>
+        <a href="https://confluence.atlassian.com/pages/viewrecentblogposts.action?key=Cloud" target="_blank" rel="noopener">Find out what's changed in Jira</a>
+        <a href="https://support.atlassian.com/jira-software-cloud/docs/what-is-the-new-navigation-in-jira/" target="_blank" rel="noopener">Read about the new navigation</a>
+       </div>
+    </div>
+    <button class="icon-btn" id="themeToggleBtn" aria-label="Switch to dark mode" aria-pressed="false">
+      <i class="bi bi-lightbulb"></i>  </button>
+    <div class="avatar">sai profile</div>
+  </div>
+</header>
+
+<div class="app-body">
+  <nav class="side-menu">
+    <ul class="side-menu-list">
+      <li class="side-menu-item">
+          <span class="side-center">
+              <i class="bi bi-house-door"></i>
+          </span>
+          For you
+      </li>
+
+      <li class="side-menu-item" id="recentBtn">
+          <span class="side-center">
+              <i class="bi bi-clock-history"></i>
+          </span>
+          Recent
+          <span class="arrow-icon">
+              <i class="bi bi-chevron-right"></i>
+          </span>
+      </li>
+
+      <li class="side-menu-item">
+          <span class="side-center">
+              <i class="bi bi-star"></i>
+          </span>
+          Starred
+          <span class="arrow-icon">
+              <i class="bi bi-chevron-right"></i>
+          </span>
+      </li>
+
+      <li class="side-menu-item">
+          <span class="side-center">
+              <i class="bi bi-grid"></i>
+          </span>
+          Apps
+      </li>
+
+      <li class="side-menu-item">
+          <span class="side-center">
+              <i class="bi bi-card-checklist"></i>
+          </span>
+          Plans
+      </li>
+
+      <li class="side-menu-item">
+          <span class="side-center">
+              <i class="bi bi-diamond"></i>
+          </span>
+          Spaces
+
+          <span class="plus">
+              <i class="bi bi-plus-lg"></i>
+          </span>
+
+          <span class="dots">
+              <i class="bi bi-three-dots"></i>
+          </span>
+      </li>
+    </ul>
+
+  </nav>
+  <main class="content">
+    <div class="content-grid">
+      <section class="issue-main">
+        
+        <h1 class="issue-title" id="issueTitle" >Broken Password Reset Link</h1>
+
+        <div class="field-block">
+          <div>Description</div>
+        </div>
+
+        <div class="field-block">
+          <h2 class="section-heading">Summary</h2>
+          <p class="body-text" id="fieldSummary" data-editable="text">[Authentication] Password reset link on login page results in 404 error</p>
+        </div>
+
+        <div class="field-block">
+          <h2 class="section-heading">Description</h2>
+          <ol class="ordered-list" id="fieldDescription" data-editable="html">
+            <li>Navigate to the staging login page.</li>
+            <li>Click on the "Forgot Password?" hyperlink below the password field.</li>
+            <li>Observe the resulting page.</li>
+          </ol>
+          <p class="body-text"><strong>Frequency:</strong> Consistent (reproducible every time)</p>
+        </div>
+
+        <div class="field-block">
+          <h2 class="section-heading">Expected result</h2>
+          <p class="body-text">
+The user should be redirected to the password recovery request form (`/login/forgot-password`).
+          </p>
+        </div>
+
+        <div class="field-block">
+          <h2 class="section-heading">Actual result</h2>
+          <p class="body-text">
+The user is redirected to a broken page displaying a "404 - Page Not Found" error.
+          </p>
+        </div>
+
+
+        <div class="comments-section">
+          <h2 class="section-heading">Comments</h2>
+          <div class="comment">
+            <span class="person-avatar">ME</span>
+            <textarea id="commentInput" class="comment-input" placeholder="Add a comment" rows="2"></textarea>
+          </div>
+          <div class="comment-actions">
+            <button id="save" class="create-btn small">Save</button>
+            <button id="cancel" class="outline-btn small">Cancel</button>
+          </div>
+          <div id="commentList" class="comment-list"></div>
+        </div>
+      </section>
+      <aside class="issue-side">
+        <div class="icon-toolbar">
+
+          <button class="icon-pill" title="Lock">
+              <i class="bi bi-lock-fill"></i>
+          </button>
+
+          <button class="icon-pill" title="Watchers">
+              <i class="bi bi-eye"></i> 2
+          </button>
+
+          <button class="icon-pill" title="Share">
+              <i class="bi bi-share"></i>
+          </button>
+
+          <button class="icon-pill" title="More">
+              <i class="bi bi-three-dots"></i>
+          </button>
+
+        </div>
+
+        <div class="actions-row">
+          <div class="status-dropdown">
+            <button class="status-pill" id="statusPill">In Progress <span class="arrow-icon">⌄</span></button>
+            <ul class="status-menu" id="statusMenu" hidden>
+              <li data-status="To Do" data-color="#DDDFE4" data-text="#44546F">To Do</li>
+              <li data-status="In Progress" data-color="#4688EC" data-text="#FFFFFF">In Progress</li>
+              <li data-status="In Review" data-color="#9F8FEF" data-text="#FFFFFF">In Review</li>
+              <li data-status="Done" data-color="#1F845A" data-text="#FFFFFF">Done</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="collapsible-header">
+          <span class="chevron-down">⌄</span> Details
+        </div>
+
+        <dl class="info-list">
+          <div class="info-row">
+            <dt>Assignee</dt>
+            <dd>
+              <span class="person"><span class="person-avatar">st</span> saitejaswi</span>
+              <a href="#" class="text-link">Assign to me</a>
+            </dd>
+          </div>
+          <div class="info-row">
+            <dt>Labels</dt>
+            <dd>
+              <div class="label-list" id="labelList">
+                <span class="label-chip" data-label="sample-bug">sample-bug <button class="label-remove" aria-label="Remove label">×</button></span>
+              </div>
+              <input type="text" id="labelInput" class="label-input" placeholder="+ Add label, press Enter">
+            </dd>
+          </div>
+          <div class="info-row">
+            <dt>Team</dt>
+            <dd class="gray-text">None</dd>
+          </div>
+          <div class="info-row">
+            <dt>Sprint</dt>
+            <dd><a href="#" class="text-link">Sprint 1</a></dd>
+          </div>
+          <div class="info-row">
+            <dt>Story point estimate</dt>
+            <dd class="gray-text">None</dd>
+          </div>
+          <div class="info-row">
+            <dt>Fix versions</dt>
+            <dd class="gray-text">None</dd>
+          </div>
+          
+          <div class="info-row">
+            <dt>Actual start</dt>
+            <dd class="gray-text">Add date</dd>
+          </div>
+          <div class="info-row">
+            <dt>Actual end</dt>
+            <dd class="gray-text">Add date</dd>
+          </div>
+          <div class="info-row">
+            <dt>Reporter</dt>
+            <dd>
+              <span class="person"><span class="person-avatar alt">sai</span> sai</span>
+            </dd>
+          </div>
+        </dl>
+
+        <button class="toggle-row" data-target="devContent"><i class="bi bi-chevron-right"></i> Development</button>
+        <div class="toggle-content" id="devContent" hidden>
+          <p class="toggle-empty">No commits, branches, or pull requests linked yet.</p>
+          <button class="outline-btn small"><i class="bi bi-plus-lg"></i> Link a branch</button>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+</div>
+
+<div class="recent-popup" id="recentPopup" hidden>
+  <div class="recent-header">
+    <h2>Recent</h2>
+
+    <button class="icon-btn" id="closeRecentBtn" aria-label="Close">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <div class="recent-search">
+    <input
+      type="text"
+      id="recentSearch"
+      placeholder="Search recent items"
+    />
+  </div>
+
+  <div class="recent-section">
+    <span class="section-title">This week</span>
+
+    <div class="recent-item">
+      <div class="recent-info">
+        <strong>My discovery project</strong>
+        <small>2 days ago</small>
+      </div>
+    </div>
+  </div>
+
+  <button class="recent-footer">
+    View all recent items
+  </button>
+</div>
+
+<div class="overlay-bg" id="createModalBackdrop" hidden>
+  <div class="modal modal-large" id="createModal" role="dialog" aria-modal="true" aria-labelledby="createModalTitle">
+    <div class="modal-header">
+      <h2 id="createModalTitle">Create issue</h2>
+      <button class="icon-btn" id="closeCreateModalBtn" aria-label="Close">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <p class="required-note">Required fields are marked with an asterisk <span class="required">*</span></p>
+
+    <form id="createIssueForm" class="modal-form" novalidate>
+
+      <div class="form-row">
+        <label for="issueSpace">Space <span class="required">*</span></label>
+        <select id="issueSpace" name="space" required>
+          <option value="">Select Name</option>
+          <option value="Atlas">Atlas</option>
+          <option value="Core Platform">Core Platform</option>
+        </select>
+        <span class="error-text" id="issueSpaceError" hidden>Space is required.</span>
+      </div>
+
+      <div class="form-row">
+        <label for="issueType">Work type <span class="required">*</span></label>
+        <select id="issueType" name="type" required>
+          <option value="">Select Type</option>
+          <option value="Idea">Idea</option>
+          <option value="Bug">Bug</option>
+          <option value="Task">Task</option>
+          <option value="Story">Story</option>
+        </select>
+        <span class="error-text" id="issueTypeError" hidden>Work type is required.</span>
+      </div>
+
+      <div class="form-row">
+        <label for="issueSummary">Summary <span class="required">*</span></label>
+        <input type="text" id="issueSummary" name="summary" placeholder="A short, descriptive title" required>
+        <span class="error-text" id="issueSummaryError" hidden>Summary is required.</span>
+      </div>
+
+      <div class="form-row">
+        <label for="issueDescription">Description</label>
+        <textarea id="issueDescription" name="description" rows="3" placeholder="Add more detail (optional)"></textarea>
+      </div>
+
+      <div class="form-row">
+        <label for="issueAssignee">Assignee</label>
+        <select id="issueAssignee" name="assignee">
+          <option value="">Automatic</option>
+          <option value="You">Assign to me</option>
+          <option value="Jordan Diaz">Jordan Diaz</option>
+          <option value="Alex Kim">Alex Kim</option>
+        </select>
+      </div>
+
+    
+      <div class="form-row">
+        <label for="issueReporter">Reporter <span class="required">*</span></label>
+        <div class="search-dropdown">
+          <input
+            type="text"
+            id="issueReporter"
+            placeholder="Search reporter..."
+            autocomplete="off"
+          />
+
+          <ul class="search-list" id="reporterOptions" hidden>
+            <li data-value="Sam Whitfield">Sam Whitfield</li>
+            <li data-value="Jordan Diaz">Jordan Diaz</li>
+            <li data-value="Alex Kim">Alex Kim</li>
+          </ul>
+
+          <span class="error-text" id="issueReporterError" hidden>
+            Reporter is required.
+          </span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="issuePriority">Priority</label>
+        <select id="issuePriority" name="priority">
+          <option value="Highest">Highest</option>
+          <option value="High">High</option>
+          <option value="Medium" selected>Medium</option>
+          <option value="Low">Low</option>
+          <option value="Lowest">Lowest</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label for="issueLabels">Labels</label>
+        <select id="issueLabels" name="labels">
+          <option value="">Select label</option>
+          <option value="sample-bug">sample-bug</option>
+          <option value="customer-request">customer-request</option>
+          <option value="needs-research">needs-research</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label for="issueTeam">Team</label>
+        <select id="issueTeam" name="team">
+          <option value="">Choose a team</option>
+          <option value="Growth">Growth</option>
+          <option value="Platform">Platform</option>
+          <option value="Mobile">Mobile</option>
+        </select>
+        <p class="helper-text">Associates a team to an issue. You can use this field to search and filter issues by team.</p>
+      </div>
+
+      <div class="form-row">
+        <label for="issueStartDate">Start date</label>
+        <input type="date" id="issueStartDate" name="startDate" placeholder="Select date">
+        <p class="helper-text">Allows the planned start date for a piece of work to be set.</p>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="outline-btn" id="cancelCreateBtn">Cancel</button>
+        <button type="submit" class="create-btn">Create issue</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="createToast" hidden></div>
+<div class="toast" id="infoToast" hidden></div>
+
+<script src="script.js"></script>
+</body>
+</html>
