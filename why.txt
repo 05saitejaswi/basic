@@ -1,0 +1,12 @@
+Why we need a library/framework at all
+If you build a real web app with just plain JS/HTML/CSS, you'll quickly run into the same painful problems over and over:
+Problem with plain JSWhat a framework gives youManually updating the DOM every time data changes (slow, buggy, easy to forget a spot)Reactive rendering — UI updates automatically when data changesNo standard way to structure code as app growsComponent-based architecture — reusable, isolated pieces of UIRe-writing the same patterns (forms, routing, state) on every projectBuilt-in tooling: routing, state management, forms, HTTP handlingHard to keep large teams consistentConventions & ecosystem — shared patterns, libraries, community solutionsPerformance issues from re-rendering whole pagesVirtual DOM / fine-grained reactivity — only update what actually changedTesting is messy without structureTestability — components are easier to unit test in isolation
+So the short version: frameworks solve the scaling problem. Plain JS is fine for a simple page; once you have dynamic data, many UI states, and a growing team, you need structure — that's what React/Angular/Vue give you.
+
+Angular vs React vs Vue (quick comparison)
+AngularReactVueTypeFull frameworkLibrary (UI only)Framework (progressive)LanguageTypeScript-firstJS/TS, JSXJS/TS, templatesLearning curveSteepestModerateEasiestStructureVery opinionated (everything built-in: DI, routing, forms, HTTP)Unopinionated — you pick your own router, state lib, etc.Middle ground — official router/state libs, but flexibleState managementRxJS/Services built-inNeeds external lib (Redux, Zustand, Context) or React's own stateBuilt-in reactivity + Pinia/VuexBest forLarge enterprise apps, teams that want consistency enforcedFlexibility, huge ecosystem, most job demandSmaller-to-mid apps, fast to pick up, great DXBacked byGoogleMetaCommunity (Evan You)
+One-line takeaway for each:
+
+Angular = "batteries included," opinionated, good for big enterprise teams
+React = flexible library + huge ecosystem, you assemble your own stack
+Vue = gentle learning curve, good developer experience, progressive adoption
